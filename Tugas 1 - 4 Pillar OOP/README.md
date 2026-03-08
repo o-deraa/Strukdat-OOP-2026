@@ -1,3 +1,6 @@
+Nama: Dewa Ngakan Gede Wira Adhimukti
+NRP : 5027251063
+
 Pada tugas ini, saya  menerapkan 4 Pilar OOP dalam konteks membuat video game, lebih tepatnya yaitu membuat karakter game. 
 
 <br>
