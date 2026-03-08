@@ -1,18 +1,15 @@
-## Getting Started
+Pada tugas ini, saya  menerapkan 4 Pilar OOP dalam konteks membuat video game, lebih tepatnya yaitu membuat karakter game. 
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+<br>
 
-## Folder Structure
+Sebagai tambahan pehamanan, berikut saya berikan konteks terhadap atribut yang ada di dalam class Character.
 
-The workspace contains two folders by default, where:
+<br>
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+- weapont: senjata yang digunakan oleh character, ex: sword, polearm, claymore, dll
+- element : jenis kekuatan yang dimiliki karakter, ex: pyro (api), electro, hydro (air), dll
+- hp: "health point", banyaknya nyawa/darah yang dimiliki karakter
+- attack: point serangan yang dimiliki karakter, digunakan saat melawan musuh
+- rarity: tingkat kelangkaan dari suatu karakter, contoh dari umum ke langka: C, B, A ,S ,SS, SSS
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+<br> Character akan dikelompokkan berdasaran tipe elemen yang dimilikinnya.
