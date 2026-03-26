@@ -1,6 +1,30 @@
 # Implementasi OOP dalam Manajemen Pengelolaan Sampah di Lingkungan Desa
 
-## Dewa Ngakan Gede Wira Adhimukti (5027251063)
+**Dewa Ngakan Gede Wira Adhimukti (5027251063)**
+
+- [Implementasi OOP dalam Manajemen Pengelolaan Sampah di Lingkungan Desa](#implementasi-oop-dalam-manajemen-pengelolaan-sampah-di-lingkungan-desa)
+  - [Latar Belakang](#latar-belakang)
+  - [Class Diagram](#class-diagram)
+  - [Kode Program](#kode-program)
+  - [Penjelasan Alur Program](#penjelasan-alur-program)
+  - [Konsep OOP yang digunakan](#konsep-oop-yang-digunakan)
+    - [Abstraction](#abstraction)
+    - [Polymorphism](#polymorphism)
+    - [Inheritance](#inheritance)
+    - [Encapsulation](#encapsulation)
+  - [Keunikan](#keunikan)
+    - [1. Kalkulasi Poin Dinamis](#1-kalkulasi-poin-dinamis)
+    - [2. Ekspor Data Polimorphism](#2-ekspor-data-polimorphism)
+    - [3. Validasi Input Berlapis](#3-validasi-input-berlapis)
+  - [Screenshot Output](#screenshot-output)
+    - [Menu Utama](#menu-utama)
+    - [Menu 1 - Tambahkan Warga](#menu-1---tambahkan-warga)
+    - [Menu 2 - Lihat Warga](#menu-2---lihat-warga)
+    - [Menu 3 - Update Data Warga](#menu-3---update-data-warga)
+    - [Menu 4 - Hitung Sampah](#menu-4---hitung-sampah)
+    - [Menu 5 - Lihat dan Cetak Laporan Sampah](#menu-5---lihat-dan-cetak-laporan-sampah)
+    - [Menu 6 - Hapus Warga](#menu-6---hapus-warga)
+
 
 ## Latar Belakang
 Persoalan sampah di Bali tampak seperti tak ada ujungnya dari tahun ke tahun. Banyaknya sampah berserakan, tidak adanya sistem pemilahan sampah yang baik, dan kurangnya kesadaran baik dari pemerintah dan masyarakat semakin menambah PR besar pengelolaan sampah di Bali. Sayangnya, lingkungan tempat saya tinggal juga tidak terlepas dari permasalahan tersebut. Setiap saya keluar rumah, pemandangan sampah berserakan yang menyengat akan selalu ada untuk menyapa saya. Ketika hujan, tidak lengkap rasanya tanpa luapan air yang menenuhi jalan, ditambah dengan berseraknya sampah yang menempel di jalan ketika sudah surut. Menurut saya, persoalan sampah ini harus diselesaikan dulu dari lapisan paling bawah, yakni dari kesadaran masyarakat dan lingkungan terkecil, yakni keluarga dan banjar (Di Bali tidak ada RT/RW, sistem yang serupa yakni banjar). Di banjar, harus diciptakan sistem pengelolaan sampah berbasis poin, merit, dan denda untuk memupuk kebiasaan masyarakat dalam bertanggung jawab terhadap sampah yang mereka hasilkan. Sistem tersebut harus mencakup setidaknya hal - hal berikut:
@@ -1214,7 +1238,57 @@ abstract class Sampah implements Exportable {
 
 
 ## Keunikan
-1. 
+
+### 1. Kalkulasi Poin Dinamis
+
+Poin tidak hanya dihitung dari berat saja. Setiap jenis sampah memiliki variabel bonusnya sendiri yang mencerminkan nilai dan kesulitan penanganan di dunia nyata.
+| Jenis Sampah | Variabel Penentu | Contoh Bonus |
+|---|---|---|
+| `SampahOrganik` | Layak kompos atau tidak | +20 poin jika `isCompos = true` |
+| `SampahAnorganik` | Jenis material | +20 logam, +10 kaca |
+| `SampahB3` | Tingkat bahaya | ×3 jika tinggi, ×2 jika sedang |
+| `SampahDaurUlang` | Kategori barang | +30 elektronik, +20 kardus, + 10 botol, +5 kertas |
+
+### 2. Ekspor Data Polimorphism
+Berkat interface `Exportable`, baik class `Warga` maupun seluruh subClass `Sampah`
+diwajibkan menyediakan dua format output: `toCSV()` dan `toText()`.
+ 
+```java
+// Warga dan Sampah adalah tipe yang berbeda,
+// tapi keduanya bisa diperlakukan seragam saat ekspor
+interface Exportable {
+    String toCSV();
+    String toText();
+}
+ 
+class Warga   implements Exportable { ... }
+abstract class Sampah implements Exportable { ... }
+```
+ 
+Hasilnya, `Main` bisa mengiterasi semua data dan mengekspor ke dua format
+sekaligus — tampil di terminal dan ditulis ke file `.csv` aktual di penyimpanan, semuanya dilakukan tanpa perlu tahu tipe spesifik objek yang sedang diproses.
+ 
+```java
+//Tidak peduli isinya Warga atau jenis Sampah apapun
+daftarWarga.forEach(w -> System.out.println(w.toCSV()));
+daftarWarga.forEach(w -> fw.write(w.toCSV() + "\n"));
+```
+
+### 3. Validasi Input Berlapis
+Setiap input yang ada pada program ini sudah berisi validasi input berlapis yang memnimialisir anomali pada data yang dimasukkan. 
+
+ 
+| Field | Aturan Validasi |
+|---|---|
+| Nama | Hanya huruf dan spasi — `matches("[a-zA-Z ]+")`  |
+| Tanggal lahir | Format `DD-MM-YYYY` diverifikasi via `DateTimeFormatter` |
+| Alamat | Tidak boleh kosong atau hanya berisi spasi |
+ 
+Masing-masing validasi membentuk loop tersendiri yang tidak akan keluar sampai input
+benar untuk memastikan tidak ada objek `Warga` yang pernah tercipa dengan data yang tidak valid.
+
+![validasi](assets/image12.png)
+
 
  
 
