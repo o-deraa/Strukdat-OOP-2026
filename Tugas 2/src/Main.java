@@ -125,6 +125,7 @@ public class Main {
 
         Warga w = new Warga(idWarga, nama, tanggalLahir, alamat);
         daftarWarga.add(w);
+        idWarga++;
 
         System.out.println("\n[SUKSES] Warga berhasil ditambahkan!");
         System.out.printf("ID: %d | %s | Lahir: %s | %s%n", idWarga, nama, tanggalLahir, alamat);
@@ -140,15 +141,15 @@ public class Main {
         if (daftarWarga.isEmpty()) {
             System.out.println("  (Belum ada warga terdaftar)");
         } else {
-            System.out.printf("  %-4s %-20s %-14s %-25s %6s %6s%n",
+            System.out.printf("  %-4s %-20s %-14s %-35s %6s %6s%n",
                 "ID", "Nama", "Tgl Lahir", "Alamat", "Setor", "Poin");
-            System.out.println("  " + "-".repeat(80));
+            System.out.println("  " + "-".repeat(90));
             for (Warga w : daftarWarga) {
-                System.out.printf("  %-4d %-20s %-14s %-25s %6d %6d%n",
+                System.out.printf("  %-4d %-20s %-14s %-33s %6d %6d%n",
                     w.getId(), w.getNama(), w.getTanggalLahir(),
                     w.getAlamat(), w.getRiwayatSetoran().size(), w.getPoin());
             }
-            System.out.println("  " + "-".repeat(80));
+            System.out.println("  " + "-".repeat(90));
             System.out.printf("  Total warga terdaftar: %d%n", daftarWarga.size());
         }
 
@@ -311,42 +312,44 @@ public class Main {
             System.out.println("========================================");
 
             if (daftarWarga.isEmpty()) {
-                System.out.println("(belum ada data warga)");
+                System.out.println("(Belum ada data warga)");
                 System.out.print("Tekan [Enter] untuk melanjutkan...");
                 input.nextLine();
                 return; 
             }
 
-            System.out.println("  1. Laporan semua warga (teks)");
+            System.out.println("  1. Laporan Semua Warga (Teks)");
             System.out.println("  2. Ekspor CSV");
-            System.out.println("  3. Riwayat setoran per warga");
+            System.out.println("  3. Riwayat Setoran Per Warga");
             System.out.println("  4. Kembali");
 
             int p = bacaInt("Pilih [1-4]: ");
 
             switch (p) {
                 case 1:
+                    clearScreen();
                     laporanTeks();
                     break;
                 case 2:
+                    clearScreen();
                     laporanCSV();
                     break;
                 case 3:
+                    clearScreen();
                     laporanPerWarga();
                     break;
                 case 4:
-                    return; // keluar dari loop & method
+                    return; 
                 default:
                     System.out.println("[ERROR] Tidak valid.");
             }
 
             System.out.print("Tekan [Enter] untuk melanjutkan...");
-            input.nextLine(); // pause sebelum loop ulang
+            input.nextLine(); 
         }
     }
     
         static void laporanTeks() {
-            clearScreen();
             System.out.println("========================================");
             System.out.println("   LAPORAN WARGA - SISTEM SAMPAH");
             System.out.println("========================================");
@@ -361,8 +364,8 @@ public class Main {
                 rank++;
             }
     
-            int    totalPoin  = daftarWarga.stream().mapToInt(Warga::getPoin).sum();
-            int    totalSetor = daftarWarga.stream().mapToInt(w -> w.getRiwayatSetoran().size()).sum();
+            int totalPoin  = daftarWarga.stream().mapToInt(Warga::getPoin).sum();
+            int totalSetor = daftarWarga.stream().mapToInt(w -> w.getRiwayatSetoran().size()).sum();
             double totalBerat = daftarWarga.stream()
                 .flatMap(w -> w.getRiwayatSetoran().stream())
                 .mapToDouble(s -> s.getSampah().getBerat()).sum();
@@ -417,7 +420,7 @@ public class Main {
             if (w == null) return;
     
             System.out.println("========================================");
-            System.out.printf("  RIWAYAT - %s (ID: %d)%n", w.getNama(), w.getId());
+            System.out.printf("RIWAYAT - %s (ID: %d)%n", w.getNama(), w.getId());
             System.out.println("----------------------------------------");
     
             List<Setoran> riwayat = w.getRiwayatSetoran();
@@ -426,7 +429,7 @@ public class Main {
             } else {
                 riwayat.forEach(System.out::println);
                 System.out.println("----------------------------------------");
-                System.out.printf("  Total: %d setoran | %d poin%n",
+                System.out.printf("Total: %d setoran | %d poin%n",
                     riwayat.size(), w.getPoin());
             }
         }
