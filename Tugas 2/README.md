@@ -1039,6 +1039,12 @@ Menu `Lihat dan Cetak Laporan` memiliki 3 sub-menu utama, yakni:
 
 Menu `Hapus Warga` berfungsi untuk mengapus warga dari list database.
 
+Alur Utama:
+1. Warga wajib mendaftarkan diri terlebih dahulu
+2. Jika sudah daftar, warga baru diperbolehkan untuk menyetor sampah dan mendapatkan poin
+3. Jika poin sampah yang dikumpulkan sudah mencapai milestone tertentu, maka warga akan diberitahu dan berhak mendapatkan hadiah sesuai dengan yang ditentukan oleh Banjar.
+4. Warga dapat mengetahui riwayat setoran sampah mereka
+
 ## Konsep OOP yang digunakan
 ### Abstraction
 Dalam sistem ini, abstraksi diterapkan melalui `interface` dan `abstract class`.
@@ -1059,9 +1065,9 @@ interface Notifiable {
 ```
 Pertama, melalui penggunaan interface seperti `Exportable` dan `Notifiable`. Interface ini berfungsi sebagai kontrak perilaku (behavior contract) yang harus dipenuhi oleh setiap kelas yang mengimplementasikannya. Secara teknis, interface hanya berisi deklarasi method tanpa implementasi, sehingga tidak ada asumsi tentang bagaimana method tersebut dijalankan. 
 
-Sebagai contoh, Exportable dapat mendefinisikan method seperti toCSV() atau toText(). Sistem tidak peduli bagaimana format CSV dibentuk oleh masing-masing objek. Class Warga bisa mengekspor data identitas dan agregasi setoran, sementara kelas Sampah bisa mengekspor atribut seperti tipe dan berat. Keduanya memenuhi kontrak yang sama, tetapi dengan implementasi yang berbeda sesuai konteks datanya.
+Sebagai contoh, Exportable dapat mendefinisikan method seperti `toCSV()` atau `toText()`. Sistem tidak peduli bagaimana format CSV dibentuk oleh masing-masing objek. Class Warga bisa mengekspor data identitas dan agregasi setoran, sementara kelas Sampah bisa mengekspor atribut seperti tipe dan berat. Keduanya memenuhi kontrak yang sama, tetapi dengan implementasi yang berbeda sesuai konteks datanya.
 
-Hal ini secara tidak langsung menciptakan polymorphic behavior di mana sistem dapat memperlakukan semua objek Exportable secara seragam tanpa mengetahui detail internalnya. Misalnya, modul ekspor cukup memanggil toCSV() tanpa perlu melakukan type-checking atau branching berdasarkan jenis objek.
+Hal ini secara tidak langsung menciptakan polymorphic behavior di mana sistem dapat memperlakukan semua objek `Exportable` secara seragam tanpa mengetahui detail internalnya. Misalnya, modul ekspor cukup memanggil `toCSV()`tanpa perlu melakukan type-checking atau branching berdasarkan jenis objek.
 
 - Abstract Class
 ```java
@@ -1086,11 +1092,131 @@ abstract class {
 }
 
 ```
+Kedua, abstraksi diterapkan melalui konsep `Sampah` sebagai `abstract class`. Di sini, abstraksi tidak hanya mendefinisikan kontrak, tetapi juga merepresentasikan konsep umum sebagai master class atau kelas utama. Nantinya akan diciptakan sub-class dari `Sampah`, seperti `SampahOrganik`, `SampahAnorganik`, dan lain sebagainya.    Abstraksi menyederhanakan dan menyembunyikan suatu proses yang detail dan kompleks, seperti pada kasus ini yaitu method `hitungPoin()`. Method ini tidak memiliki implementasi pada class `Sampah`, namun wajib diberikan isi pada sub-class atau kelas turunannya nanti.
 
-
-Kedua, abstraksi diterapkan melalui konsep `Sampah` sebagai `abstract class`. Di sini, abstraksi tidak hanya mendefinisikan kontrak, tetapi juga merepresentasikan konsep umum sebagai master class atau kelas utama. Nantinya akan diciptakan sub-class dari `Sampah`, seperti `SampahOrganik`, `SampahAnorganik`, dan lain sebagainya.
 
 ### Polymorphism
+Polymorphism memungkinkan objek memiliki banyak bentuk. Subclass dengan superclass yang sama dapat mewarisi method dengan nama yang sama. Tapi, method bisa berperilaku berbeda tergantung kebutuhan dan keinginan pengguna. Di sini, konsep tersebut diterapkan melalui method  `hitungPoin`. SubClass dari class `Sampah` dapat mengimplementasikan fungsi `hitungPoin` dengan cara yang berbeda - beda, berikut adalah contohnya:
+
+- SubClass SampahOrganik
+```java
+ ...
+    @Override
+    public int hitungPoin(){
+        int base = (int)(getBerat()*5);
+        if (isCompos) {
+            return base + 20;
+        } 
+
+        return base;
+    }
+...
+```
+
+-SubClass SampahB3
+```java
+...
+    public int hitungPoin(){
+        int base = (int)(getBerat() * 10);
+        switch (getTingkatBahaya().toLowerCase()) {
+            case "tinggi":
+                return base * 3;
+            case "sedang":
+                return base * 2 ;
+            default:
+                return base;
+        }
+    }
+...
+```
+
+### Inheritance
+Inheritance adalah konsep untuk membuat class baru (subclass) dari class yang sudah ada (superlass). Subclass mewarisi atribut dan methode dari superclass sehingga mengurangi duplikasi. Pada program ini, diimplementasikan konsep inheritance melalui pembuatan subClass dari class `Sampah`, seperti `SampahOrganik`, `SampahAnorganik`, `SampahB3`, `SampahDaurUlang`. Berikut adalah salah satu contoh penerapannya:
+```java
+class SampahOrganik extends Sampah {
+
+    private boolean isCompos;
+
+    public SampahOrganik(int id, String tipe, double berat, boolean isCompos){
+        super(id, tipe, berat);
+        this.isCompos = isCompos;
+    }
+
+    boolean getIsCompos (){
+        return isCompos;
+    }
+
+    void setIsCompos(boolean isCompos){
+        this.isCompos = isCompos;
+    }
+
+
+    @Override
+    public int hitungPoin(){
+        int base = (int)(getBerat()*5);
+        if (isCompos) {
+            return base + 20;
+        } 
+
+        return base;
+    }
+
+    @Override
+    public String toCSV() {
+        return super.toCSV() + "," + (isCompos ? "bisa_kompos" : "tidak");
+    }
+    
+}
+```
+
+### Encapsulation
+ Encapsulation adalah proses menggabungkan atribut dan method dalam satu class serta membatasi akses langsung menggunakan access modifier. Konsep tersebut sudah diterapkan pada semua `class` yang ada pada program ini, sebagai contoh yakni pada class `Sampah`:
+ ```java
+abstract class Sampah implements Exportable {
+    private int id;
+    private String tipe;
+    private double berat;
+
+    public Sampah(int id, String tipe, double berat){
+        this.id = id;
+        this.tipe = tipe;
+        this.berat = berat;
+    }
+
+    //getter 
+    int getId(){
+        return id;
+    }
+    String getTipe(){
+        return tipe;
+    }
+    double getBerat(){
+        return berat;
+    }
+
+    //setter
+    void setId(int id){
+        this.id  = id;
+    }
+    void setTipe(String tipe){
+        this.tipe = tipe;
+    }
+
+    void setBerat(double berat){
+        this.berat = berat;
+    }
+
+    .....
+}
+ ```
+
+ Pada class   `Sampah` tersebut dapat dilihat bahwa semua atribut sudah langsung digabungkan menjadi satu serta akses terhadap atribut sudah dibatasi melalui penggunaan `getter` dan `setter`.
+
+
+## Keunikan
+1. 
+
+ 
 
 ## Screenshot Output
 Berikut adalah dokumentasi berupa output dari sistem manajemen pengelolaan sampah yang sudah dibuat:
