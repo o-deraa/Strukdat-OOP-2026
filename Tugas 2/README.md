@@ -12,6 +12,7 @@ Berikut adalah implementasi OOP yang saya rancang untuk permasalahan tersebut:
 ## Class Diagram
 ```mermaid
 classDiagram
+    %% Bagian Interface dan Implementasinya (Behavior Export & Notifikasi)
     class Exportable {
         <<interface>>
         +toCSV() String
@@ -20,81 +21,99 @@ classDiagram
     
     class Notifiable {
         <<interface>>
-        +terimaNotifikasi(pesan: String)
+        +terimaNotifikasi(String pesan) void
         +getKotakMasuk() List~String~
         +adaPesanBelumDibaca() boolean
-        +tandaiSudahDibaca()
+        +tandaiSudahDibaca() void
     }
-    
+
+    %% Bagian Abstract Class dan Subclass (Kategori Sampah)
     class Sampah {
         <<abstract>>
-        -id: int
-        -tipe: String
-        -berat: double
+        #int id
+        #String tipe
+        #double berat
+        +Sampah(int id, String tipe, double berat)
         +hitungPoin()* int
         +toCSV() String
         +toText() String
     }
     
     class SampahOrganik {
-        -isCompos: boolean
+        -boolean isCompos
+        +SampahOrganik(int id, String tipe, double berat, boolean isCompos)
         +hitungPoin() int
         +toCSV() String
     }
     
     class SampahAnorganik {
-        -material: String
+        -String material
+        +SampahAnorganik(int id, String tipe, double berat, String material)
         +hitungPoin() int
     }
     
     class SampahB3 {
-        -tingkatBahaya: String
+        -String tingkatBahaya
+        +SampahB3(int id, String tipe, double berat, String tingkatBahaya)
         +hitungPoin() int
     }
     
     class SampahDaurUlang {
-        -kategori: String
+        -String kategori
+        +SampahDaurUlang(int id, String tipe, double berat, String kategori)
         +hitungPoin() int
     }
-    
+
+    %% Bagian Class Utama (Entitas Sistem)
     class Warga {
-        -id: int
-        -nama: String
-        -tanggalLahir: String
-        -alamat: String
-        -poin: int
-        -riwayatSetoran: List~Setoran~
-        -kotakMasuk: List~String~
-        -adaBelumDibaca: boolean
-        -MILESTONES: int[]
-        +tambahSetoran(s: Setoran)
+        -int id
+        -String nama
+        -String tanggalLahir
+        -String alamat
+        -int poin
+        -List~Setoran~ riwayatSetoran
+        -List~String~ kotakMasuk
+        -boolean adaBelumDibaca
+        -int[] MILESTONES
+        +Warga(int id, String nama, String tanggalLahir, String alamat)
+        +tambahSetoran(Setoran s) void
         +toCSV() String
         +toText() String
+        +terimaNotifikasi(String pesan) void
+        +getKotakMasuk() List~String~
+        +adaPesanBelumDibaca() boolean
+        +tandaiSudahDibaca() void
     }
     
     class Setoran {
-        -id: int
-        -warga: Warga
-        -sampah: Sampah
-        -tanggal: String
-        -poinDiperoleh: int
+        -int id
+        -Warga warga
+        -Sampah sampah
+        -String tanggal
+        -int poinDiperoleh
+        +Setoran(int id, Warga warga, Sampah sampah, String tanggal, int poinDiperoleh)
     }
     
     class Main {
-        -daftarWarga: List~Warga~
-        +main(args: String[])
+        -List~Warga~ daftarWarga
+        +main(String[] args) void
     }
 
-    Exportable <|.. Sampah
-    Exportable <|.. Warga
-    Notifiable <|.. Warga
-    Sampah <|-- SampahOrganik
-    Sampah <|-- SampahAnorganik
-    Sampah <|-- SampahB3
-    Sampah <|-- SampahDaurUlang
-    Warga "1" --> "*" Setoran : memiliki riwayat
-    Setoran "1" --> "1" Warga : milik
-    Setoran "1" --> "1" Sampah : mencatat
-    Main --> "*" Warga : mengelola
+    %% Relasi Realization/Implementation (Interfaces)
+    Exportable <|.. Sampah : implements
+    Exportable <|.. Warga : implements
+    Notifiable <|.. Warga : implements
+
+    %% Relasi Generalization/Inheritance (Garis tegas dengan panah kosong)
+    Sampah <|-- SampahOrganik : extends
+    Sampah <|-- SampahAnorganik : extends
+    Sampah <|-- SampahB3 : extends
+    Sampah <|-- SampahDaurUlang : extends
+
+    %% Relasi Aggregation/Association (Behavior & Kepemilikan)
+    Warga o-- Setoran : has-a riwayat
+    Setoran o-- Warga : belongs-to
+    Setoran o-- Sampah : has-a catatan sampah
+    Main o-- Warga : has-a data warga
 
 ```
