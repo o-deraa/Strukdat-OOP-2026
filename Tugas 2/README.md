@@ -1221,45 +1221,45 @@ abstract class Sampah implements Exportable {
 ## Screenshot Output
 Berikut adalah dokumentasi berupa output dari sistem manajemen pengelolaan sampah yang sudah dibuat:
 ### Menu Utama
-![menu utama](image.png)
+![menu utama](assets/image.png)
 
 ### Menu 1 - Tambahkan Warga
-![menu 1](image-1.png)
+![menu 1](assets/image-1.png)
 
 ### Menu 2 - Lihat Warga
-![menu 2](image-2.png)
+![menu 2](assets/image-2.png)
 
 ### Menu 3 - Update Data Warga
-![menu 3](image-3.png)
+![menu 3](assets/image-3.png)
 
 ### Menu 4 - Hitung Sampah
-![menu 4](image-4.png)
+![menu 4](assets/image-4.png)
 
 ### Menu 5 - Lihat dan Cetak Laporan Sampah
-![alt text](image-5.png)
+![alt text](assets/image-5.png)
 
 - Opsi 1 - Laporan Semua Warga
 
-![alt text](image-6.png)
+![alt text](assets/image-6.png)
 
 - Opsi 2 - Ekspor CSV
 
-![alt text](image-7.png)
+![alt text](assets/image-7.png)
 
 Jika memilih opsi 2, nantinya akan tercipta 2 file .csv yaitu `export_setoran.csv` dan `export_warga.csv`
 
-![alt text](<Screenshot 2026-03-26 135647.png>) 
+![alt text](assets/Screenshot%202026-03-26%20135633.png) 
 
-![alt text](image-8.png)
+![alt text](assets/image-8.png)
 
-![alt text](image-9.png)
+![alt text](assets/image-9.png)
 
 - Opsi 3 - Riwayat Setoran Per Warga
 
-![alt text](image-11.png)
+![alt text](assets/image-11.png)
 
 ### Menu 6 - Hapus Warga
 
-![alt text](image-10.png)
+![alt text](assets/image-10.png)
 
 
