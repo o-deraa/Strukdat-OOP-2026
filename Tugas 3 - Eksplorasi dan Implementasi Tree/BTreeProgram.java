@@ -422,7 +422,7 @@ public class BTreeProgram {
         System.out.println("║          B-Tree Program Initialization      ║");
         System.out.println("╚═════════════════════════════════════════════╝\n");
         
-        System.out.print("Minimum degree t (recommended 3 for demo): ");
+        System.out.print("Minimum Degree t: ");
         int minimumDegree = readIntWithDefault(3);
         BTree tree = new BTree(minimumDegree);
 

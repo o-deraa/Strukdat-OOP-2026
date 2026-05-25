@@ -4,6 +4,7 @@
   - [Anggota Kelompok](#anggota-kelompok)
   - [Tree Dasar dan Variasi](#tree-dasar-dan-variasi)
   - [Referensi Paper](#referensi-paper)
+  - [Link Github Tugas](#link-github-tugas)
   - [Problem Statement / Permasalahan](#problem-statement--permasalahan)
   - [Penjelasan Struktur dan Algoritma serta Visualisasi B-Tree dan B+ Tree](#penjelasan-struktur-dan-algoritma-serta-visualisasi-b-tree-dan-b-tree)
     - [B-Tree](#b-tree)
@@ -60,7 +61,18 @@
     - [Integrasi dengan Learned Index](#integrasi-dengan-learned-index-1)
     - [Pengembangan PkB-tree untuk Penyimpanan Modern](#pengembangan-pkb-tree-untuk-penyimpanan-modern-1)
   - [Hasil Implementasi](#hasil-implementasi)
+    - [Overview Program](#overview-program)
+    - [Ringkasan Perbedaan Implementasi B-Tree dan B+ Tree dalam Program](#ringkasan-perbedaan-implementasi-b-tree-dan-b-tree-dalam-program)
+    - [Menu dan Fitur Program](#menu-dan-fitur-program)
     - [Progam B-Tree](#progam-b-tree)
+      - [Gambaran Umum Program B-Tree](#gambaran-umum-program-b-tree)
+      - [Penjelasan Implementasi pada Kode](#penjelasan-implementasi-pada-kode)
+      - [Demonstrasi Program](#demonstrasi-program)
+    - [Program B+ Tree](#program-b-tree)
+      - [Gambaran Umum Program B+ Tree](#gambaran-umum-program-b-tree-1)
+      - [Penjelasan Implementasi Pada Kode](#penjelasan-implementasi-pada-kode-1)
+    - [Demonstrasi Program](#demonstrasi-program-1)
+  - [Perbandingan Performa Kedua Tree pada Program](#perbandingan-performa-kedua-tree-pada-program)
 
 
 ## Anggota Kelompok
@@ -81,6 +93,11 @@ Pada tugas ini, kelompok kami memilih untuk melakukan eksplorasi dan implementas
 1. **Fabian Burghart dan Stephan Wagner, _On the histories of B-trees_**. Paper ini membahas B-Tree sebagai struktur search tree seimbang, aturan jumlah key di setiap node, posisi leaf, serta mekanisme insertion dan splitting. [[Paper B-Tree]](Paper1_BTree.pdf)
 2. **Imran A. Adeleke, Adegbuyi D. Gbadebo, dan Abayomi O. Dawodu, _A B+-Tree-Based Indexing and Storage of Numerical Records in School Databases_**. Paper ini membahas B+ Tree sebagai struktur indexing untuk penyimpanan dan pencarian data, terutama pada konteks database dan penyimpanan berbasis blok. [[Paper B+ Tree]](Paper2_BPlusTree.pdf)
 
+## Link Github Tugas
+```
+https://github.com/o-deraa/Strukdat-OOP-2026/tree/main/Tugas%203%20-%20Eksplorasi%20dan%20Implementasi%20Tree
+```
+
 
 ## Problem Statement / Permasalahan
 
@@ -93,7 +110,7 @@ Namun, tidak semua `tree` memiliki performa yang stabil. `Binary Search Tree `bi
 
 B-Tree dirancang untuk menyimpan banyak key dalam satu node dan menjaga semua leaf berada pada level yang sama. Dengan cara ini, tinggi tree dapat tetap rendah walaupun jumlah data sangat besar. Karakteristik ini membuat B-Tree sangat cocok digunakan pada database dan file system, terutama karena sistem penyimpanan sekunder seperti disk bekerja lebih efisien jika jumlah akses ke node dapat ditekan.
 
-![alt text](image1.png)
+![alt text](assets/image1.png)
 Sumber: geeksforgeeks.com
 
 Seiring berkembangnya kebutuhan database modern, muncul pengembangan dari `B-Tree` yaitu `B+ Tree`. `B+ Tree` dikembangkan untuk meningkatkan efisiensi indexing dan sequential access pada sistem database.` B+ Tree` mempertahankan prinsip keseimbangan B-Tree, tetapi mengubah cara penyimpanan data. Berbeda dengan `B-Tree`, internal node hanya digunakan sebagai index atau penunjuk arah pencarian, sedangkan seluruh data aktual disimpan pada leaf node yang saling terhubung sehingga proses traversal data dan range query menjadi lebih cepat. Oleh karena itu, `B+ Tree` banyak digunakan pada DBMS modern seperti MySQL dan PostgreSQL sebagai struktur indexing utama.
@@ -111,7 +128,7 @@ Berdasarkan _On the histories of B-trees_, sebuah `B-Tree` berorde 2m+1 adalah s
 #### Struktur Node B-Tree
 Setiap node dalam `B-Tree` menyimpan sejumlah key yang terurut dan pointer yang menghubungkan ke node-node child-nya. Mengacu pada definisi Burghart dan Wagner (2026), sebuah node dengan k key memiliki struktur sebagai berikut:
 
-![alt text](image4-1.png)
+![alt text](assets/image4-1.png)
 
 Ki adalah key ke-i yang disimpan secara berurutan (K1<K2<⋯<Kk​), dan Pi​ adalah pointer ke child node. Makna dari setiap pointer mengikuti aturan pencarian yaitu P0​ mengarah ke subtree yang memuat semua key lebih kecil dari K1, setiap Pi​ untuk 0<i<k mengarah ke subtree dengan key di antara Ki dan Ki+1​, dan Pk​ mengarah ke subtree dengan semua key lebih besar dari Kk​.
 
@@ -234,7 +251,7 @@ Untuk node dengan key `K1, K2, ..., Kk` dan pointer `P0, P1, ..., Pk`, traversal
 Dengan cara ini, seluruh key dalam B-Tree dapat ditampilkan dari nilai terkecil hingga terbesar. Namun, untuk operasi range query dan sequential access, B+ Tree biasanya lebih efisien karena seluruh data berada pada leaf node dan leaf node saling terhubung.
 
 #### Visualisasi B-Tree
-![alt text](image2-1.png)
+![alt text](assets/image2-1.png)
 Sumber: geeksforgeeks.com
 
 ### B+ Tree
@@ -410,7 +427,7 @@ Keunggulan ini membuat `B+ Tree` lebih efisien daripada `B-Tree` untuk operasi r
 Namun, sequential traversal bukan berarti memiliki waktu konstan. Setelah leaf awal ditemukan, waktu eksekusi tetap bergantung pada jumlah data atau jumlah leaf node yang harus dibaca. Oleh karena itu, kompleksitas range query dapat dipahami sebagai `O(log n + r)`, dengan `log n` untuk menemukan posisi awal dan `r` untuk jumlah data yang dibaca dalam rentang tersebut.
 
 #### Visualisasi B+ Tree
-![alt text](image7.png)
+![alt text](assets/image7.png)
 Sumber: geeksforgeeks.com
 
 
@@ -502,7 +519,7 @@ Karakteristik utama `B-Tree`:
 
 Contoh Struktur `B-Tree`:
 
-![alt text](image3.png)
+![alt text](assets/image3.png)
 Sumber: Scaler Topics
 
 Pada gambar di atas, node paling atas `[50 60 80]` merupakan `root node`. Root tersebut memiliki beberapa child node yang menyimpan rentang nilai tertentu. Misalnya:
@@ -522,7 +539,7 @@ Struktur `B-Tree` selalu menjaga tree tetap seimbang sehingga pencarian data dap
 
 Berikut adalah ilustrasi dari `B+ Tree`:
 
-![alt text](image2.png)
+![alt text](assets/image2.png)
 Sumber: geeksforgeeks.com
 
 Karakteristik utama B+ Tree:
@@ -534,7 +551,7 @@ Karakteristik utama B+ Tree:
 
 Contoh struktur `B+ Tree`: 
 
-![alt text](image4.png)
+![alt text](assets/image4.png)
 Sumber: geeksforgeeks.com
 
 Pada gambar di atas, root node berisi key `[30, 50, dan 70]` yang berfungsi sebagai index atau penunjuk arah pencarian. Di bawahnya terdapat beberapa leaf node yang menyimpan data, seperti:
@@ -674,4 +691,1216 @@ Implementasi B-Tree dan B+ Tree pada bahasa java dapat dilihat pada file berikut
 - [Program B-Tree](BTreeProgram.java)
 - [Program B+ Tree](BPlusTreeProgram.java)
 
+### Overview Program
+Program `B-Tree` dan `B+ Tree` sama-sama menyediakan operasi dasar untuk mengelola sekumpulan key bertipe `int`. Pengguna dapat memasukkan key, mencari key, menghapus key, menampilkan isi tree, melakukan pencarian dalam rentang nilai, melihat key secara terurut, dan menjalankan benchmark sederhana.
+
+Kedua program menggunakan konsep `minimumDegree` atau derajat minimum `t`. Nilai ini menentukan kapasitas node, yaitu jumlah maksimum key sebesar `2t - 1` dan batas minimum key umum sebesar `t - 1`. Semakin besar nilai `t`, semakin banyak key yang dapat ditampung dalam satu node, sehingga tinggi tree cenderung lebih rendah, tetapi operasi di dalam node dapat melibatkan lebih banyak elemen.
+
+Secara umum, kedua program memiliki tujuan untuk menunjukkan bagaimana tree tetap seimbang walaupun terjadi insert dan delete berulang. Kedua, program memperlihatkan perbedaan implementasi `B-Tree` dan `B+ Tree`, terutama pada penyimpanan data, traversal, dan range search. Ketiga, program menyediakan menu interaktif sehingga struktur tree dapat diuji dengan input manual maupun benchmark.
+
+### Ringkasan Perbedaan Implementasi B-Tree dan B+ Tree dalam Program
+
+| Aspek | B-Tree | B+ Tree |
+|---|---|---|
+| Penyimpanan key | Key disimpan di internal node dan leaf node. | Key efektif disimpan di leaf node, sedangkan internal node menyimpan separator. |
+| Struktur node | Menggunakan array `keys` dan array `children`. | Menggunakan `List<Integer>` untuk key dan `List<Node>` untuk children. |
+| Range search | Menggunakan traversal DFS bersyarat. | Menggunakan leaf chain dari leaf awal sampai batas atas. |
+| Traversal sorted | Menggunakan inorder traversal. | Menggunakan linked list antar leaf. |
+| Split leaf | Middle key naik ke parent. | Key pertama leaf kanan menjadi separator parent. |
+| Delete | Menggunakan predecessor, successor, borrowing, dan merge. | Menghapus di leaf, lalu rebalance leaf/internal dengan borrowing atau merge. |
+| Benchmark | Menguji insert, search, range search, delete, dan height. | Menguji operasi yang sama dengan tambahan karakteristik leaf chain. |
+
+Perbedaan paling penting pada implementasi ini terletak pada cara range search dilakukan. `B-Tree` harus melakukan traversal dari subtree ke subtree karena data dapat tersebar di internal dan leaf node. `B+ Tree` dapat memulai dari leaf pertama yang relevan lalu berjalan melalui pointer `next`, sehingga akses berurutan lebih natural.
+
+### Menu dan Fitur Program
+
+edua program menyediakan menu yang hampir sama. Menu dibuat agar pengguna dapat mencoba operasi tree tanpa perlu mengubah source code.
+
+| Nomor Menu | Fitur | Fungsi Umum |
+|---|---|---|
+| 1 | Insert key(s) | Menambahkan satu atau banyak key sekaligus. |
+| 2 | Search key | Mengecek apakah suatu key ada di tree. |
+| 3 | Delete key | Menghapus key jika ditemukan. |
+| 4 | Range search | Mengambil key dalam interval `[low, high]`. |
+| 5 | Display tree | Menampilkan struktur tree per level. |
+| 6 | Show sorted keys | Menampilkan semua key secara terurut. |
+| 7 | Benchmark | Menguji performa insert, search, range search, delete, dan height. |
+| 0 | Exit | Keluar dari program. |
+
+Fitur menu dipisahkan dari class tree utama. Artinya, class `BTree` dan `BPlusTree` menyimpan logika struktur data, sedangkan method seperti `handleInsert`, `handleSearch`, dan `handleDelete` menangani interaksi input-output pengguna.
+
 ### Progam B-Tree
+
+#### Gambaran Umum Program B-Tree
+
+`BTreeProgram` adalah program Java yang mengimplementasikan struktur data B-Tree dengan key bertipe integer. Program ini menggunakan nested class `BTree` sebagai struktur data utama, dan nested class `Node` sebagai representasi node dalam tree.
+
+`B-Tree` pada program ini mempertahankan semua leaf pada level yang sama. Setiap node dapat menyimpan beberapa key sekaligus, sehingga tree tidak tumbuh terlalu tinggi seperti binary search tree biasa. Struktur ini cocok untuk menjelaskan konsep indeks karena pencarian dilakukan dengan membandingkan key dalam node lalu turun ke child yang sesuai.
+
+
+#### Penjelasan Implementasi pada Kode
+
+- Class
+``` java
+public class BTreeProgram {
+    public static class BTree {
+        private static class Node { ... }
+        
+        private Node root;
+        private final int minimumDegree;
+        private int size;
+    }
+    
+    public static void main(String[] args) { ... }
+}
+ ```
+
+ Struktur kelas tersebut menunjukkan bahwa program utama `BTreeProgram` berisi kelas `BTree` sebagai pengelola struktur pohon, sedangkan kelas `Node` digunakan sebagai representasi setiap simpul dalam B-Tree yang menyimpan key, child, jumlah key aktif, dan penanda apakah node tersebut leaf.
+
+`BPlusTreeProgram` adalah program Java yang mengimplementasikan B+ Tree dengan key dan value bertipe integer. Pada implementasi ini, value yang disimpan sama dengan key karena method insert memanggil `insert(root, key, key)`. Dalam konteks indeks database, value dapat dibayangkan sebagai record pointer, tetapi pada program ini value disederhanakan menjadi integer yang sama dengan key.
+
+B+ Tree pada program ini menggunakan dua jenis node, yaitu `InternalNode` dan `LeafNode`. Internal node menyimpan separator dan child pointer, sedangkan leaf node menyimpan key-value dan pointer `next` menuju leaf berikutnya. Pointer `next` inilah yang membuat range search dan traversal sorted lebih efisien secara konseptual
+
+ - Komponen Node B-Tree
+```java
+private static class Node {
+    int keyCount;           // Jumlah keys aktif dalam node
+    int[] keys;             // Array menyimpan keys (ukuran: 2t-1)
+    Node[] children;        // Array menyimpan pointer children (ukuran: 2t)
+    boolean leaf;           // Flag apakah node adalah leaf
+    
+    Node(int minimumDegree, boolean leaf) {
+        this.leaf = leaf;
+        this.keys = new int[2 * minimumDegree - 1];
+        this.children = new Node[2 * minimumDegree];
+        this.keyCount = 0;
+    }
+}
+```
+
+
+Pada class `Node`, array `keys` berukuran `2t - 1` karena satu node `B-Tree` dengan minimum degree `t` maksimal dapat menyimpan `2t - 1` key, sedangkan array `children` berukuran `2t` karena node internal maksimal dapat memiliki `2t` child. `leaf` berguna sebagai flag untuk membedakan leaf node dari internal node
+
+- Inisialisasi B-Tree
+```java
+public BTree(int minimumDegree) {
+    if (minimumDegree < 2) {
+        throw new IllegalArgumentException("Minimum degree must be at least 2");
+    }
+    this.minimumDegree = minimumDegree;
+    this.root = new Node(minimumDegree, true);
+    this.size = 0;
+}
+```
+
+Root awal dibuat sebagai leaf kosong. Saat key mulai dimasukkan, root dapat berubah menjadi internal node jika root penuh dan harus di-split. Field `size` menyimpan jumlah key aktif yang berhasil dimasukkan, bukan jumlah node.
+
+- B-Tree - Search
+  
+Fitur search digunakan untuk mengecek apakah sebuah key ada dalam tree. Search dimulai dari root, lalu membandingkan key target dengan key yang ada di node saat ini. Jika key ditemukan, method langsung mengembalikan node tersebut. Jika tidak ditemukan dan node masih memiliki child, pencarian turun ke child yang sesuai.
+
+```java
+public boolean search(int key) {
+    return search(root, key) != null;
+}
+
+private Node search(Node node, int key) {
+    int index = 0;
+    while (index < node.keyCount && key > node.keys[index]) {
+        index++;
+    }
+    if (index < node.keyCount && key == node.keys[index]) {
+        return node;
+    }
+    if (node.leaf) {
+        return null;
+    }
+    return search(node.children[index], key);
+}
+```
+
+Logika `while` mencari posisi pertama di mana key target tidak lebih besar dari key pada node. Jika key sama dengan elemen pada posisi tersebut, berarti key ditemukan. Jika tidak sama, posisi `index` menunjukkan child yang harus dikunjungi berikutnya.
+
+Pada `B-Tree`, pencarian tidak selalu sampai leaf. Jika key berada di internal node, search berhenti di internal node tersebut. Hal ini berbeda dari `B+ Tree`, yang selalu mengarahkan pencarian ke leaf karena data efektif berada di leaf.
+
+- B-Tree - Insert
+
+Fitur insert menambahkan key baru sambil mempertahankan aturan kapasitas B-Tree. Program juga menolak duplikasi key dengan melakukan search terlebih dahulu. Jika key sudah ada, method mengembalikan `false` dan ukuran tree tidak berubah.
+
+```java
+public boolean insert(int key) {
+    if (search(key)) {
+        return false;
+    }
+
+    Node currentRoot = root;
+    if (currentRoot.keyCount == 2 * minimumDegree - 1) {
+        Node newRoot = new Node(minimumDegree, false);
+        root = newRoot;
+        newRoot.children[0] = currentRoot;
+        splitChild(newRoot, 0, currentRoot);
+        insertNonFull(newRoot, key);
+    } else {
+        insertNonFull(currentRoot, key);
+    }
+    size++;
+    return true;
+}
+```
+ Jika root sudah memiliki `2t - 1` key, root harus di-split terlebih dahulu agar tinggi tree dapat bertambah. Setelah root di-split, key baru dimasukkan ke node yang belum penuh melalui `insertNonFull`.
+
+ - Insert ke Node yang Belum Penuh
+
+Method `insertNonFull` menangani dua kasus. Jika node adalah leaf, key langsung disisipkan pada posisi yang menjaga urutan naik. Jika node adalah internal node, program mencari child yang sesuai, mengecek apakah child tersebut penuh, lalu melakukan split sebelum turun lebih jauh jika diperlukan.
+
+```java
+private void insertNonFull(Node node, int key) {
+    int index = node.keyCount - 1;
+    if (node.leaf) {
+        while (index >= 0 && key < node.keys[index]) {
+            node.keys[index + 1] = node.keys[index];
+            index--;
+        }
+        node.keys[index + 1] = key;
+        node.keyCount++;
+        return;
+    }
+
+    while (index >= 0 && key < node.keys[index]) {
+        index--;
+    }
+    index++;
+
+    if (node.children[index].keyCount == 2 * minimumDegree - 1) {
+        splitChild(node, index, node.children[index]);
+        if (key > node.keys[index]) {
+            index++;
+        }
+    }
+    insertNonFull(node.children[index], key);
+}
+```
+
+Strategi ini disebut top-down insertion. Program memastikan child yang akan dituruni tidak penuh sebelum proses rekursi dilanjutkan. Dengan cara ini, ketika insert sampai ke leaf, leaf tersebut sudah memiliki ruang untuk menerima key baru.
+
+###Method `insertNonFull` menangani dua kasus. Jika node adalah leaf, key langsung disisipkan pada posisi yang menjaga urutan naik. Jika node adalah internal node, program mencari child yang sesuai, mengecek apakah child tersebut penuh, lalu melakukan split sebelum turun lebih jauh jika diperlukan.
+
+```java
+private void insertNonFull(Node node, int key) {
+    int index = node.keyCount - 1;
+    if (node.leaf) {
+        while (index >= 0 && key < node.keys[index]) {
+            node.keys[index + 1] = node.keys[index];
+            index--;
+        }
+        node.keys[index + 1] = key;
+        node.keyCount++;
+        return;
+    }
+
+    while (index >= 0 && key < node.keys[index]) {
+        index--;
+    }
+    index++;
+
+    if (node.children[index].keyCount == 2 * minimumDegree - 1) {
+        splitChild(node, index, node.children[index]);
+        if (key > node.keys[index]) {
+            index++;
+        }
+    }
+    insertNonFull(node.children[index], key);
+}
+```
+
+Strategi ini disebut top-down insertion. Program memastikan child yang akan dituruni tidak penuh sebelum proses rekursi dilanjutkan. Dengan cara ini, ketika insert sampai ke leaf, leaf tersebut sudah memiliki ruang untuk menerima key baru.
+
+- B-Tree - Split Child
+
+Split dilakukan ketika sebuah child penuh. Child penuh dibagi menjadi dua node, lalu key tengah naik ke parent. Node kiri menyimpan key yang lebih kecil, node kanan menyimpan key yang lebih besar, dan parent menerima separator baru.
+
+```java
+private void splitChild(Node parent, int index, Node fullChild) {
+    Node rightChild = new Node(minimumDegree, fullChild.leaf);
+    rightChild.keyCount = minimumDegree - 1;
+
+    for (int j = 0; j < minimumDegree - 1; j++) {
+        rightChild.keys[j] = fullChild.keys[j + minimumDegree];
+    }
+
+    if (!fullChild.leaf) {
+        for (int j = 0; j < minimumDegree; j++) {
+            rightChild.children[j] = fullChild.children[j + minimumDegree];
+        }
+    }
+
+    fullChild.keyCount = minimumDegree - 1;
+
+    for (int j = parent.keyCount; j >= index + 1; j--) {
+        parent.children[j + 1] = parent.children[j];
+    }
+    parent.children[index + 1] = rightChild;
+
+    for (int j = parent.keyCount - 1; j >= index; j--) {
+        parent.keys[j + 1] = parent.keys[j];
+    }
+    parent.keys[index] = fullChild.keys[minimumDegree - 1];
+    parent.keyCount++;
+}
+```
+
+Pada split ini, key di posisi `minimumDegree - 1` menjadi key tengah yang naik ke parent. Key setelah posisi tengah disalin ke `rightChild`, sedangkan `fullChild` dipangkas agar hanya memiliki `minimumDegree - 1` key. Jika node yang di-split bukan leaf, child pointer bagian kanan juga dipindahkan ke `rightChild`
+
+- B-Tree - Delete
+
+Fitur delete menghapus key sambil memastikan setiap node tetap memenuhi batas minimum key. Program melakukan search lebih dahulu untuk memastikan key memang ada. Jika key tidak ditemukan, method mengembalikan `false` dan struktur tree tidak berubah.
+
+```java
+public boolean delete(int key) {
+    if (!search(key)) {
+        return false;
+    }
+    delete(root, key);
+    if (root.keyCount == 0 && !root.leaf) {
+        root = root.children[0];
+    }
+    size--;
+    return true;
+}
+```
+
+Setelah delete selesai, root dicek kembali. Jika root kosong tetapi bukan leaf, root diturunkan menjadi child pertamanya. Ini mencegah tree memiliki root kosong yang tidak diperlukan dan menjaga tinggi tree tetap minimal.
+
+Recursive delete mencari posisi key dalam node. Jika key ditemukan di leaf, key langsung dihapus. Jika key ditemukan di internal node, program memakai strategi predecessor, successor, atau merge. Jika key belum ditemukan dan node bukan leaf, program memastikan child tujuan memiliki cukup key sebelum turun.
+
+```java
+private void delete(Node node, int key) {
+    int index = findKeyIndex(node, key);
+
+    if (index < node.keyCount && node.keys[index] == key) {
+        if (node.leaf) {
+            removeFromLeaf(node, index);
+        } else {
+            removeFromInternal(node, index);
+        }
+        return;
+    }
+
+    if (node.leaf) {
+        return;
+    }
+
+    boolean keyMayBeInLastChild = index == node.keyCount;
+    if (node.children[index].keyCount < minimumDegree) {
+        fill(node, index);
+    }
+
+    if (keyMayBeInLastChild && index > node.keyCount) {
+        delete(node.children[index - 1], key);
+    } else {
+        delete(node.children[index], key);
+    }
+}
+```
+
+Method `fill` adalah bagian penting dari delete. Sebelum turun ke child, program memastikan child tersebut memiliki minimal `t` key, bukan hanya `t - 1` key. Hal ini dilakukan agar proses delete di bawah tidak langsung menyebabkan underflow yang sulit ditangani dari bawah.
+
+Jika key berada pada leaf, penghapusan dilakukan dengan menggeser semua key setelah posisi penghapusan ke kiri. Setelah shifting selesai, `keyCount` dikurangi satu.
+
+```java
+private void removeFromLeaf(Node node, int index) {
+    for (int i = index + 1; i < node.keyCount; i++) {
+        node.keys[i - 1] = node.keys[i];
+    }
+    node.keyCount--;
+}
+```
+
+Operasi ini sederhana karena leaf tidak memiliki child yang harus dipindahkan. Yang perlu dijaga hanyalah urutan key dalam array dan jumlah key aktif pada node.
+
+Jika key berada pada internal node, key tidak bisa langsung dihapus tanpa menjaga struktur subtree. Program menggunakan tiga strategi. Pertama, jika child kiri memiliki cukup key, key diganti dengan predecessor. Kedua, jika child kanan memiliki cukup key, key diganti dengan successor. Ketiga, jika kedua child tidak cukup, keduanya digabung lalu delete dilanjutkan pada node hasil merge.
+
+```java
+private void removeFromInternal(Node node, int index) {
+    int key = node.keys[index];
+
+    if (node.children[index].keyCount >= minimumDegree) {
+        int predecessor = getPredecessor(node, index);
+        node.keys[index] = predecessor;
+        delete(node.children[index], predecessor);
+    } else if (node.children[index + 1].keyCount >= minimumDegree) {
+        int successor = getSuccessor(node, index);
+        node.keys[index] = successor;
+        delete(node.children[index + 1], successor);
+    } else {
+        merge(node, index);
+        delete(node.children[index], key);
+    }
+}
+```
+
+Predecessor adalah key terbesar dari subtree kiri, sedangkan successor adalah key terkecil dari subtree kanan. Penggunaan predecessor atau successor menjaga urutan key tetap valid karena pengganti masih berada di antara semua key subtree kiri dan subtree kanan.
+
+- B-Tree - Borrowing and Merge
+
+Saat child yang akan dituruni kekurangan key, program memanggil `fill`. Method ini mencoba meminjam key dari sibling kiri, lalu sibling kanan. Jika tidak ada sibling yang dapat memberi key, child digabung dengan sibling.
+
+```java
+private void fill(Node node, int index) {
+    if (index != 0 && node.children[index - 1].keyCount >= minimumDegree) {
+        borrowFromPrevious(node, index);
+    } else if (index != node.keyCount && node.children[index + 1].keyCount >= minimumDegree) {
+        borrowFromNext(node, index);
+    } else {
+        if (index != node.keyCount) {
+            merge(node, index);
+        } else {
+            merge(node, index - 1);
+        }
+    }
+}
+```
+
+Borrowing dari sibling kiri dilakukan dengan rotasi melalui parent. Key parent turun ke child, lalu key terbesar sibling kiri naik ke parent. Jika node bukan leaf, child pointer yang sesuai juga ikut dipindahkan.
+
+```java
+private void borrowFromPrevious(Node node, int index) {
+    Node child = node.children[index];
+    Node sibling = node.children[index - 1];
+
+    for (int i = child.keyCount - 1; i >= 0; i--) {
+        child.keys[i + 1] = child.keys[i];
+    }
+
+    if (!child.leaf) {
+        for (int i = child.keyCount; i >= 0; i--) {
+            child.children[i + 1] = child.children[i];
+        }
+    }
+
+    child.keys[0] = node.keys[index - 1];
+    if (!child.leaf) {
+        child.children[0] = sibling.children[sibling.keyCount];
+    }
+    node.keys[index - 1] = sibling.keys[sibling.keyCount - 1];
+
+    child.keyCount++;
+    sibling.keyCount--;
+}
+```
+
+Borrowing dari sibling kanan bekerja dengan arah berlawanan. Key parent turun ke akhir child, lalu key terkecil sibling kanan naik ke parent. Setelah itu, key dan child pointer pada sibling kanan digeser ke kiri.
+
+```java
+private void borrowFromNext(Node node, int index) {
+    Node child = node.children[index];
+    Node sibling = node.children[index + 1];
+
+    child.keys[child.keyCount] = node.keys[index];
+    if (!child.leaf) {
+        child.children[child.keyCount + 1] = sibling.children[0];
+    }
+    node.keys[index] = sibling.keys[0];
+
+    for (int i = 1; i < sibling.keyCount; i++) {
+        sibling.keys[i - 1] = sibling.keys[i];
+    }
+
+    if (!sibling.leaf) {
+        for (int i = 1; i <= sibling.keyCount; i++) {
+            sibling.children[i - 1] = sibling.children[i];
+        }
+    }
+
+    child.keyCount++;
+    sibling.keyCount--;
+}
+```
+
+Merge menggabungkan child, key separator dari parent, dan sibling kanan menjadi satu node. Setelah merge, parent kehilangan satu key dan satu child pointer.
+
+```java
+private void merge(Node node, int index) {
+    Node child = node.children[index];
+    Node sibling = node.children[index + 1];
+
+    child.keys[minimumDegree - 1] = node.keys[index];
+
+    for (int i = 0; i < sibling.keyCount; i++) {
+        child.keys[i + minimumDegree] = sibling.keys[i];
+    }
+
+    if (!child.leaf) {
+        for (int i = 0; i <= sibling.keyCount; i++) {
+            child.children[i + minimumDegree] = sibling.children[i];
+        }
+    }
+
+    for (int i = index + 1; i < node.keyCount; i++) {
+        node.keys[i - 1] = node.keys[i];
+    }
+
+    for (int i = index + 2; i <= node.keyCount; i++) {
+        node.children[i - 1] = node.children[i];
+    }
+
+    child.keyCount += sibling.keyCount + 1;
+    node.keyCount--;
+}
+```
+
+- B-Tree -  Range Search
+  
+Range search mengambil semua key dalam interval `[low, high]`. Jika `low > high`, program langsung mengembalikan list kosong karena rentang tidak valid.
+
+```java
+public List<Integer> rangeSearch(int low, int high) {
+    List<Integer> result = new ArrayList<>();
+    if (low > high) {
+        return result;
+    }
+    rangeSearch(root, low, high, result);
+    return result;
+}
+```
+
+Implementasi `B-Tree` memakai DFS bersyarat. Program hanya turun ke subtree yang masih mungkin berisi key dalam rentang. Jika key pada node sudah lebih besar dari `high`, traversal pada bagian tersebut dapat dihentikan.
+
+```java
+private void rangeSearch(Node node, int low, int high, List<Integer> result) {
+    int index = 0;
+    while (index < node.keyCount) {
+        if (!node.leaf && low <= node.keys[index]) {
+            rangeSearch(node.children[index], low, high, result);
+        }
+        if (node.keys[index] >= low && node.keys[index] <= high) {
+            result.add(node.keys[index]);
+        }
+        if (node.keys[index] > high) {
+            return;
+        }
+        index++;
+    }
+    if (!node.leaf) {
+        rangeSearch(node.children[index], low, high, result);
+    }
+}
+```
+
+Range search pada `B-Tree` tetap dapat menghasilkan key terurut karena traversal mengikuti pola inorder. Namun, karena tidak ada leaf chain, program tetap perlu mempertimbangkan child dan key internal.
+
+- B-Tree - Traverse Sorted
+
+raverse sorted menggunakan inorder traversal. Untuk setiap key pada node, program mengunjungi child kiri, menambahkan key, lalu melanjutkan ke child berikutnya.
+
+```java
+public List<Integer> traverse() {
+    List<Integer> result = new ArrayList<>();
+    traverse(root, result);
+    return result;
+}
+
+private void traverse(Node node, List<Integer> result) {
+    int index;
+    for (index = 0; index < node.keyCount; index++) {
+        if (!node.leaf) {
+            traverse(node.children[index], result);
+        }
+        result.add(node.keys[index]);
+    }
+    if (!node.leaf) {
+        traverse(node.children[index], result);
+    }
+}
+```
+
+Karena `B-Tree` menjaga semua key dalam urutan terurut di setiap node dan subtree, inorder traversal menghasilkan list key secara menaik. Fitur ini membantu pengguna memeriksa apakah insert dan delete masih mempertahankan properti urutan.
+
+- B-Tree -  Display Tree
+  Display tree mencetak setiap node berdasarkan level. Jika root kosong, program menampilkan `Tree is empty`.
+
+```java
+public void printTree() {
+    if (root.keyCount == 0) {
+        System.out.println("Tree is empty");
+        return;
+    }
+    printTree(root, 0);
+}
+
+private void printTree(Node node, int level) {
+    System.out.println("Level " + level + " " + keysToString(node));
+    if (!node.leaf) {
+        for (int i = 0; i <= node.keyCount; i++) {
+            printTree(node.children[i], level + 1);
+        }
+    }
+}
+```
+
+Output fitur ini berguna untuk melihat struktur node setelah operasi insert atau delete. Pengguna dapat melihat kapan root berubah, kapan node bertambah, dan bagaimana key tersebar antar level.
+
+- B-Tree - Benchmark
+  
+Benchmark `B-Tree` menguji operasi insert, search, range search, delete, dan height. Data dibuat dari angka `0` sampai `n - 1`, lalu diacak menggunakan `Collections.shuffle` dengan seed `42` agar hasil lebih konsisten antar eksekusi.
+
+```java
+int[] sizes = {10_000, 50_000, 100_000};
+int minimumDegree = 16;
+int operationCount = 20_000;
+Random random = new Random(42);
+```
+
+Untuk setiap ukuran data, program membangun tree baru, memasukkan semua key, melakukan sejumlah search, melakukan 1000 range search dengan panjang rentang sekitar 100, lalu menghapus sebagian key. Waktu diukur menggunakan `System.nanoTime()` dan ditampilkan dalam milidetik.
+
+```java
+long startInsert = System.nanoTime();
+for (int key : data) {
+    tree.insert(key);
+}
+long insertTime = System.nanoTime() - startInsert;
+```
+
+Benchmark ini berguna sebagai gambaran kasar, bukan pengukuran performa ilmiah yang final. Hasil dapat dipengaruhi JVM warm-up, kondisi mesin, garbage collection, dan proses lain yang sedang berjalan.
+
+#### Demonstrasi Program
+- Input Degree
+![alt text](assets/image.png)
+
+- Main Menu
+![alt text](assets/image-1.png)
+
+- Insert Key
+![alt text](assets/image-2.png)
+
+- Search Key
+![alt text](assets/image-3.png)
+![alt text](assets/image-4.png)
+
+- Delete Key
+![alt text](assets/image-5.png)
+
+- Range Search
+![alt text](assets/image-6.png)
+
+- Display Tree
+![alt text](assets/image-7.png)
+
+- Show Sorted Keys
+![alt text](assets/image-8.png)
+
+- Benchmark B-Tree
+![alt text](assets/image-9.png)
+
+### Program B+ Tree
+
+#### Gambaran Umum Program B+ Tree
+
+`BPlusTreeProgram` adalah program Java yang mengimplementasikan B+ Tree dengan key dan value bertipe `int`. Pada implementasi ini, value yang disimpan sama dengan key karena method insert memanggil `insert(root, key, key)`. Dalam konteks indeks database, value dapat dibayangkan sebagai record pointer, tetapi pada program ini value disederhanakan menjadi `int` yang sama dengan key.
+
+`B+ Tree` pada program ini menggunakan dua jenis node, yaitu `InternalNode` dan `LeafNode`. Internal node menyimpan separator dan child pointer, sedangkan leaf node menyimpan key-value dan pointer `next` menuju leaf berikutnya. Pointer `next` inilah yang membuat range search dan traversal sorted lebih efisien secara konseptual.
+
+#### Penjelasan Implementasi Pada Kode
+
+- Class
+```java
+public class BPlusTreeProgram {
+    public static class BPlusTree {
+        private abstract static class Node { ... }
+        private static class InternalNode extends Node { ... }
+        private static class LeafNode extends Node { ... }
+        private static class Split { ... }
+
+        private LeafNode firstLeaf;
+        private Node root;
+        private final int minimumDegree;
+        private final int maxKeys;
+        private final int minKeys;
+        private int size;
+    }
+
+    public static void main(String[] args) { ... }
+}
+```
+Class `Node` dibuat abstract agar internal node dan leaf node memiliki basis yang sama, yaitu `keys`. Method `isLeaf()` dipakai untuk membedakan perilaku node saat insert, search, delete, dan print tree.
+
+- Struktur Node pada B+ Tree
+
+`B+ Tree` menggunakan tiga struktur node utama: `Node`, `InternalNode`, dan `LeafNode`. Internal node memiliki daftar child, sedangkan leaf node memiliki daftar value dan pointer ke leaf berikutnya.
+
+```java
+private abstract static class Node {
+    List<Integer> keys = new ArrayList<>();
+
+    abstract boolean isLeaf();
+}
+
+private static class InternalNode extends Node {
+    List<Node> children = new ArrayList<>();
+
+    boolean isLeaf() {
+        return false;
+    }
+}
+
+private static class LeafNode extends Node {
+    List<Integer> values = new ArrayList<>();
+    LeafNode next;
+
+    boolean isLeaf() {
+        return true;
+    }
+}
+```
+
+Penggunaan `ArrayList` membuat operasi penambahan, penghapusan, dan pemotongan sublist lebih ringkas dibanding array manual. Namun, dari sisi performa di dalam node, operasi insert atau remove di tengah list tetap membutuhkan shifting elemen.
+
+- Inisialisasi B+ Tree
+
+Constructor `B+ Tree` menerima `minimumDegree`, lalu menghitung `maxKeys` dan `minKeys`. Root awal adalah leaf kosong, dan `firstLeaf` menunjuk ke root tersebut.
+
+```java
+public BPlusTree(int minimumDegree) {
+    if (minimumDegree < 2) {
+        throw new IllegalArgumentException("Minimum degree must be at least 2");
+    }
+    this.minimumDegree = minimumDegree;
+    this.maxKeys = 2 * minimumDegree - 1;
+    this.minKeys = minimumDegree - 1;
+    this.firstLeaf = new LeafNode();
+    this.root = firstLeaf;
+    this.size = 0;
+}
+```
+
+Field `firstLeaf` adalah pointer penting pada `B+ Tree`. Pointer ini memungkinkan traversal semua key secara berurutan tanpa harus melakukan DFS dari root. Setelah delete dan kemungkinan perubahan struktur, program memanggil `resetFirstLeaf` untuk memastikan pointer ini tetap mengarah ke leaf paling kiri.
+
+- B+ Tree - Search
+
+Search pada B+ Tree selalu turun sampai leaf. Program menggunakan `findLeaf` untuk memilih child berdasarkan separator internal, kemudian melakukan pencarian posisi key di leaf menggunakan `lowerBound`.
+
+```java
+public boolean search(int key) {
+    LeafNode leaf = findLeaf(key);
+    int index = lowerBound(leaf.keys, key);
+    return index < leaf.keys.size() && leaf.keys.get(index) == key;
+}
+
+private LeafNode findLeaf(int key) {
+    Node current = root;
+    while (!current.isLeaf()) {
+        InternalNode internal = (InternalNode) current;
+        current = internal.children.get(childIndex(internal.keys, key));
+    }
+    return (LeafNode) current;
+}
+```
+
+Method `childIndex` menentukan child yang harus dipilih. Jika key lebih besar atau sama dengan separator tertentu, index child bergerak ke kanan. Ini sesuai dengan fungsi internal key sebagai batas pemisah antar subtree.
+
+```java
+private int childIndex(List<Integer> keys, int key) {
+    int index = 0;
+    while (index < keys.size() && key >= keys.get(index)) {
+        index++;
+    }
+    return index;
+}
+```
+
+- Lower Bound
+
+`lowerBound` menggunakan binary search untuk mencari posisi pertama dengan nilai lebih besar atau sama dengan key target. Method ini dipakai pada search dan insert leaf.
+
+```java
+private int lowerBound(List<Integer> keys, int key) {
+    int low = 0;
+    int high = keys.size();
+    while (low < high) {
+        int middle = low + (high - low) / 2;
+        if (keys.get(middle) < key) {
+            low = middle + 1;
+        } else {
+            high = middle;
+        }
+    }
+    return low;
+}
+```
+
+Dengan `lowerBound`, program dapat menjaga posisi insert tetap terurut. Saat search, posisi hasil `lowerBound` cukup dicek apakah masih dalam ukuran list dan apakah nilainya sama dengan key target.
+
+- B+ Tree - Insert
+
+Insert B+ Tree menolak duplikasi key dengan search terlebih dahulu. Jika key belum ada, program memanggil insert rekursif dari root. Jika root menghasilkan split, root baru dibuat sebagai internal node dengan dua child.
+
+```java
+public boolean insert(int key) {
+    if (search(key)) {
+        return false;
+    }
+
+    Split split = insert(root, key, key);
+    if (split != null) {
+        InternalNode newRoot = new InternalNode();
+        newRoot.children.add(root);
+        newRoot.children.add(split.rightNode);
+        rebuildKeys(newRoot);
+        root = newRoot;
+    }
+    size++;
+    return true;
+}
+```
+
+Parameter value pada insert internal diisi sama dengan key. Ini membuat program tetap dapat mendemonstrasikan konsep key-value pada leaf `B+ Tree`, meskipun belum memakai record object atau pointer file seperti pada sistem database nyata.
+
+Jika node yang dikunjungi adalah leaf, key dan value dimasukkan pada posisi terurut. Jika jumlah key leaf melebihi `maxKeys`, leaf di-split. Jika node yang dikunjungi adalah internal node, program turun ke child yang sesuai, lalu menambahkan right node hasil split jika child tersebut pecah.
+
+```java
+private Split insert(Node node, int key, int value) {
+    if (node.isLeaf()) {
+        LeafNode leaf = (LeafNode) node;
+        int index = lowerBound(leaf.keys, key);
+        leaf.keys.add(index, key);
+        leaf.values.add(index, value);
+
+        if (leaf.keys.size() <= maxKeys) {
+            return null;
+        }
+        return splitLeaf(leaf);
+    }
+
+    InternalNode internal = (InternalNode) node;
+    int childIndex = childIndex(internal.keys, key);
+    Split split = insert(internal.children.get(childIndex), key, value);
+    if (split == null) {
+        rebuildKeys(internal);
+        return null;
+    }
+
+    internal.children.add(childIndex + 1, split.rightNode);
+    rebuildKeys(internal);
+
+    if (internal.keys.size() <= maxKeys) {
+        return null;
+    }
+    return splitInternal(internal);
+}
+```
+
+Ciri penting implementasi ini adalah penggunaan `rebuildKeys`. Alih-alih menyisipkan separator secara manual di posisi tertentu, program membangun ulang semua separator internal berdasarkan key pertama dari setiap child mulai child kedua. Ini membuat struktur separator lebih mudah dijaga setelah split, borrowing, atau merge.
+
+- B+ Tree - Split
+
+Program ini memakai class kecil bernama `Split` untuk mengembalikan hasil pembelahan node. Ketika sebuah node di-split, method perlu memberi tahu parent tentang separator dan node kanan baru.
+
+```java
+private static class Split {
+    int separator;
+    Node rightNode;
+
+    Split(int separator, Node rightNode) {
+        this.separator = separator;
+        this.rightNode = rightNode;
+    }
+}
+```
+
+Walaupun `separator` disimpan dalam object `Split`, implementasi parent pada program ini lebih sering membangun ulang separator menggunakan `rebuildKeys`. Dengan demikian, separator dipakai sebagai informasi hasil split, tetapi konsistensi akhir internal key dijaga oleh proses rebuild berdasarkan key pertama subtree kanan.
+
+- B+ Tree - Split Leaf
+
+Split leaf membagi leaf menjadi dua bagian. Separuh kanan dipindahkan ke leaf baru, lalu pointer `next` diatur agar leaf chain tetap terhubung.
+
+```java
+private Split splitLeaf(LeafNode leaf) {
+    LeafNode rightLeaf = new LeafNode();
+    int splitIndex = leaf.keys.size() / 2;
+
+    rightLeaf.keys.addAll(leaf.keys.subList(splitIndex, leaf.keys.size()));
+    rightLeaf.values.addAll(leaf.values.subList(splitIndex, leaf.values.size()));
+    leaf.keys.subList(splitIndex, leaf.keys.size()).clear();
+    leaf.values.subList(splitIndex, leaf.values.size()).clear();
+
+    rightLeaf.next = leaf.next;
+    leaf.next = rightLeaf;
+    return new Split(rightLeaf.keys.get(0), rightLeaf);
+}
+```
+
+Pada B+ Tree, key separator yang naik ke parent adalah key pertama dari leaf kanan. Berbeda dari B-Tree, key tersebut tetap berada di leaf kanan, karena data efektif tetap disimpan pada leaf.
+
+- B+ Tree - Split Internal
+
+Split internal membagi daftar child menjadi dua internal node. Setelah child dipindahkan, key internal dibangun ulang berdasarkan key pertama dari subtree masing-masing child.
+
+```java
+private Split splitInternal(InternalNode internal) {
+    InternalNode rightInternal = new InternalNode();
+    int splitChildIndex = internal.children.size() / 2;
+
+    rightInternal.children.addAll(internal.children.subList(splitChildIndex, internal.children.size()));
+    internal.children.subList(splitChildIndex, internal.children.size()).clear();
+
+    rebuildKeys(internal);
+    rebuildKeys(rightInternal);
+    return new Split(firstKey(rightInternal), rightInternal);
+}
+```
+
+Karena internal node B+ Tree hanya berfungsi sebagai navigator, program tidak perlu memindahkan key tengah dengan cara yang sama seperti B-Tree. Yang penting adalah pembagian child tetap valid dan separator parent dapat mengarahkan pencarian ke subtree yang benar.
+
+- Rebuild Separator
+
+Method `firstKey` mencari key pertama dari sebuah subtree dengan berjalan ke child paling kiri sampai leaf. Method `rebuildKeys` kemudian memakai `firstKey` dari setiap child mulai child kedua sebagai separator internal.
+
+```java
+private int firstKey(Node node) {
+    Node current = node;
+    while (!current.isLeaf()) {
+        current = ((InternalNode) current).children.get(0);
+    }
+    LeafNode leaf = (LeafNode) current;
+    if (leaf.keys.isEmpty()) {
+        return Integer.MIN_VALUE;
+    }
+    return leaf.keys.get(0);
+}
+
+private void rebuildKeys(InternalNode internal) {
+    internal.keys.clear();
+    for (int i = 1; i < internal.children.size(); i++) {
+        internal.keys.add(firstKey(internal.children.get(i)));
+    }
+}
+```
+
+Hal ini ini membuat internal key selalu merepresentasikan batas awal dari child kanan.
+
+- B+ Tree - Delete
+
+Delete B+ Tree dimulai dengan search. Jika key tidak ada, method mengembalikan `false`. Jika key ada, delete rekursif dijalankan, root dikecilkan jika hanya menyisakan satu child, lalu `firstLeaf` di-reset.
+
+```java
+public boolean delete(int key) {
+    if (!search(key)) {
+        return false;
+    }
+    delete(root, key, null, -1);
+    shrinkRootIfNeeded();
+    resetFirstLeaf();
+    size--;
+    return true;
+}
+```
+
+Jika node saat ini adalah leaf, key dan value dihapus dari list. Jika node saat ini internal, program turun ke child yang sesuai lalu membangun ulang separator internal. Setelah itu, jika node bukan root dan jumlah key kurang dari `minKeys`, program melakukan rebalance.
+
+```java
+private void delete(Node node, int key, InternalNode parent, int childPosition) {
+    if (node.isLeaf()) {
+        LeafNode leaf = (LeafNode) node;
+        int index = lowerBound(leaf.keys, key);
+        if (index < leaf.keys.size() && leaf.keys.get(index) == key) {
+            leaf.keys.remove(index);
+            leaf.values.remove(index);
+        }
+    } else {
+        InternalNode internal = (InternalNode) node;
+        int index = childIndex(internal.keys, key);
+        delete(internal.children.get(index), key, internal, index);
+        rebuildKeys(internal);
+    }
+
+    if (node != root && node.keys.size() < minKeys) {
+        rebalance(parent, childPosition);
+    }
+}
+```
+
+Rebalance dibutuhkan agar node tidak berada di bawah jumlah key minimum. Karena B+ Tree memiliki leaf chain dan separator internal, rebalance juga harus memastikan pointer leaf dan separator parent tetap konsisten.
+
+- Rebalance
+
+Method `rebalance` mengambil node yang kekurangan key, sibling kiri, dan sibling kanan. Jika node adalah leaf, program memanggil `rebalanceLeaf`. Jika node adalah internal node, program memanggil `rebalanceInternal`.
+
+```java
+private void rebalance(InternalNode parent, int index) {
+    if (parent == null || index < 0 || index >= parent.children.size()) {
+        return;
+    }
+
+    Node node = parent.children.get(index);
+    Node leftSibling = index > 0 ? parent.children.get(index - 1) : null;
+    Node rightSibling = index + 1 < parent.children.size() ? parent.children.get(index + 1) : null;
+
+    if (node.isLeaf()) {
+        rebalanceLeaf(parent, index, (LeafNode) node, leftSibling, rightSibling);
+    } else {
+        rebalanceInternal(parent, index, (InternalNode) node, leftSibling, rightSibling);
+    }
+    rebuildKeys(parent);
+}
+```
+
+Setelah borrowing atau merge selesai, parent selalu menjalankan `rebuildKeys`. Ini penting karena separator parent mungkin berubah setelah key pertama suatu leaf atau subtree berubah.
+
+- Rebalaance Leaf
+
+Rebalance leaf mencoba borrowing dari sibling kiri terlebih dahulu. Jika sibling kiri memiliki key lebih dari batas minimum, key terakhir sibling kiri dipindahkan ke awal leaf yang kekurangan key.
+
+```java
+if (leftSibling instanceof LeafNode && leftSibling.keys.size() > minKeys) {
+    LeafNode leftLeaf = (LeafNode) leftSibling;
+    int lastIndex = leftLeaf.keys.size() - 1;
+    leaf.keys.add(0, leftLeaf.keys.remove(lastIndex));
+    leaf.values.add(0, leftLeaf.values.remove(lastIndex));
+    return;
+}
+```
+
+Jika sibling kiri tidak bisa memberi key, program mencoba sibling kanan. Key pertama sibling kanan dipindahkan ke akhir leaf saat ini.
+
+```java
+if (rightSibling instanceof LeafNode && rightSibling.keys.size() > minKeys) {
+    LeafNode rightLeaf = (LeafNode) rightSibling;
+    leaf.keys.add(rightLeaf.keys.remove(0));
+    leaf.values.add(rightLeaf.values.remove(0));
+    return;
+}
+```
+
+Jika borrowing tidak bisa dilakukan, program melakukan merge. Merge dengan sibling kiri menggabungkan leaf saat ini ke sibling kiri dan mengatur ulang pointer `next`.
+
+```java
+if (leftSibling instanceof LeafNode) {
+    LeafNode leftLeaf = (LeafNode) leftSibling;
+    leftLeaf.keys.addAll(leaf.keys);
+    leftLeaf.values.addAll(leaf.values);
+    leftLeaf.next = leaf.next;
+    parent.children.remove(index);
+    return;
+}
+```
+
+Jika hanya sibling kanan yang tersedia, sibling kanan digabung ke leaf saat ini, lalu pointer `next` melewati sibling kanan.
+
+```java
+if (rightSibling instanceof LeafNode) {
+    LeafNode rightLeaf = (LeafNode) rightSibling;
+    leaf.keys.addAll(rightLeaf.keys);
+    leaf.values.addAll(rightLeaf.values);
+    leaf.next = rightLeaf.next;
+    parent.children.remove(index + 1);
+}
+```
+
+- Rebalance Internal
+
+Rebalance internal bekerja pada level child pointer, bukan langsung pada key data. Jika sibling kiri memiliki child lebih dari minimum degree, satu child terakhir sibling kiri dipindahkan ke awal internal node yang kekurangan.
+
+```java
+if (leftSibling instanceof InternalNode && ((InternalNode) leftSibling).children.size() > minimumDegree) {
+    InternalNode leftInternal = (InternalNode) leftSibling;
+    Node borrowedChild = leftInternal.children.remove(leftInternal.children.size() - 1);
+    internal.children.add(0, borrowedChild);
+    rebuildKeys(leftInternal);
+    rebuildKeys(internal);
+    return;
+}
+```
+
+Jika sibling kanan memiliki child berlebih, child pertama sibling kanan dipindahkan ke akhir internal node saat ini.
+
+```java
+if (rightSibling instanceof InternalNode && ((InternalNode) rightSibling).children.size() > minimumDegree) {
+    InternalNode rightInternal = (InternalNode) rightSibling;
+    Node borrowedChild = rightInternal.children.remove(0);
+    internal.children.add(borrowedChild);
+    rebuildKeys(rightInternal);
+    rebuildKeys(internal);
+    return;
+}
+```
+
+Jika borrowing tidak bisa dilakukan, internal node digabung dengan sibling kiri atau sibling kanan. Setelah penggabungan, parent menghapus child pointer yang sudah tidak digunakan.
+
+```java
+if (leftSibling instanceof InternalNode) {
+    InternalNode leftInternal = (InternalNode) leftSibling;
+    leftInternal.children.addAll(internal.children);
+    rebuildKeys(leftInternal);
+    parent.children.remove(index);
+    return;
+}
+
+if (rightSibling instanceof InternalNode) {
+    InternalNode rightInternal = (InternalNode) rightSibling;
+    internal.children.addAll(rightInternal.children);
+    rebuildKeys(internal);
+    parent.children.remove(index + 1);
+}
+```
+
+- B+ Tree - Range Search
+
+Range search pada `B+ Tree` memanfaatkan leaf chain. Program mencari leaf pertama yang mungkin memuat `low`, lalu bergerak dari leaf ke leaf berikutnya sampai key melebihi `high`.
+
+```java
+public List<Integer> rangeSearch(int low, int high) {
+    List<Integer> result = new ArrayList<>();
+    if (low > high) {
+        return result;
+    }
+
+    LeafNode leaf = findLeaf(low);
+    while (leaf != null) {
+        for (int i = 0; i < leaf.keys.size(); i++) {
+            int key = leaf.keys.get(i);
+            if (key > high) {
+                return result;
+            }
+            if (key >= low) {
+                result.add(leaf.values.get(i));
+            }
+        }
+        leaf = leaf.next;
+    }
+    return result;
+}
+```
+
+Inilah fitur yang paling menunjukkan keunggulan `B+ Tree` untuk query rentang. Setelah leaf awal ditemukan, program tidak perlu kembali ke parent atau melakukan DFS. Program cukup mengikuti pointer `next` pada leaf.
+
+- B+ Tree - Traverse Sorted
+
+Traversal semua key pada `B+ Tree` dilakukan melalui leaf chain, mulai dari `firstLeaf`. Karena setiap leaf menyimpan key secara terurut dan leaf saling terhubung dari kiri ke kanan, hasil traversal otomatis terurut.
+
+```java
+public List<Integer> traverse() {
+    List<Integer> result = new ArrayList<>();
+    LeafNode current = firstLeaf;
+    while (current != null) {
+        result.addAll(current.keys);
+        current = current.next;
+    }
+    return result;
+}
+```
+
+Fitur ini lebih sederhana dibanding inorder traversal `B-Tree`. Program tidak perlu mengunjungi internal node karena internal node hanya berperan sebagai separator.
+
+- B+ Tree - Display Tree
+
+Display tree pada `B+ Tree` menampilkan tipe node, level, dan daftar key pada setiap node. Setelah struktur tree dicetak, program juga mencetak leaf chain.
+
+```java
+public void printTree() {
+    if (root.keys.isEmpty()) {
+        System.out.println("Tree is empty");
+        return;
+    }
+    printTree(root, 0);
+    printLeafChain();
+}
+
+private void printTree(Node node, int level) {
+    String type = node.isLeaf() ? "Leaf" : "Internal";
+    System.out.println("Level " + level + " " + type + " " + node.keys);
+    if (!node.isLeaf()) {
+        InternalNode internal = (InternalNode) node;
+        for (Node child : internal.children) {
+            printTree(child, level + 1);
+        }
+    }
+}
+```
+
+Leaf chain dicetak untuk menunjukkan koneksi antar leaf. Ini membantu untuk memahami bahwa B+ Tree juga memiliki jalur sekuensial pada level leaf.
+
+```java
+private void printLeafChain() {
+    System.out.print("Leaf chain: ");
+    LeafNode current = firstLeaf;
+    while (current != null) {
+        System.out.print(current.keys);
+        if (current.next != null) {
+            System.out.print(" -> ");
+        }
+        current = current.next;
+    }
+    System.out.println();
+}
+```
+
+- B+ Tree - Benchmark
+
+Benchmark `B+ Tree` memakai pola yang sama dengan B-Tree. Program menguji tiga ukuran data, yaitu `10_000`, `50_000`, dan `100_000`. Minimum degree benchmark ditetapkan `16`, dan jumlah operasi search/delete dibatasi oleh `operationCount`.
+
+```java
+int[] sizes = {10_000, 50_000, 100_000};
+int minimumDegree = 16;
+int operationCount = 20_000;
+Random random = new Random(42);
+```
+
+Range search diuji 1000 kali dengan interval sekitar 100 key. Pada `B+ Tree`, bagian ini menunjukkan penggunaan leaf chain untuk mengumpulkan hasil dalam rentang.
+
+```java
+long rangeStart = System.nanoTime();
+int rangeCount = 0;
+for (int i = 0; i < 1000; i++) {
+    int low = random.nextInt(Math.max(1, n - 100));
+    rangeCount += tree.rangeSearch(low, low + 100).size();
+}
+long rangeTime = System.nanoTime() - rangeStart;
+```
+
+Sama seperti benchmark `B-Tree`, hasil benchmark ini sebaiknya dipahami sebagai indikator kasar. Untuk pengukuran yang lebih serius, perlu warm-up JVM, beberapa repetisi, isolasi proses, dan mungkin framework benchmark seperti JMH.
+
+### Demonstrasi Program
+
+- Inisialisai Program
+  ![alt text](assets/image-10.png)
+
+- Main Menu
+![alt text](assets/image-11.png)
+
+- Insert Keys
+  ![alt text](assets/image-12.png)
+
+- Search Key
+![alt text](assets/image-13.png)
+![alt text](assets/image-14.png)
+
+- Delete Key
+![alt text](assets/image-15.png)
+
+- Range Search
+![alt text](assets/image-16.png)
+
+- Display Tree
+![alt text](assets/image-17.png)
+
+- Show Sorted Key from Leaf Chain
+![alt text](assets/image-18.png)
+
+- Benchmark
+![alt text](assets/image-19.png)
+
+## Perbandingan Performa Kedua Tree pada Program
+
+Untuk membantu membandingkan performa B-Tree dan B+ Tree secara realtime dan presisi, kami membuat satu program tambahan yaitu [PerformanceComparison.java](PerformanceComparison.java).
+
+![alt text](assets/image-21.png)
+![alt text](assets/image-22.png)
+![alt text](assets/image-23.png)
+
+Berdasarkan hasil benchmark program, `B-Tree` menunjukkan performa lebih cepat dibandingkan `B+ Tree` pada sebagian besar operasi. Hasil ini tidak sepenuhnya bertentangan dengan teori, karena benchmark dilakukan pada implementasi Java berbasis memori, bukan pada sistem database berbasis disk atau block/page.
+
+Selain itu, implementasi `B-Tree` dalam program menggunakan array primitif `int[]` dan `Node[]`, sedangkan implementasi `B+ Tree` menggunakan `ArrayList<Integer>` dan `ArrayList<Node>`. Perbedaan struktur internal ini menyebabkan `B+ Tree` memiliki overhead tambahan berupa object allocation, boxing/unboxing, dan akses list yang lebih mahal.
+
+Pada implementasi `B+ Tree`, proses insert dan delete juga sering memanggil `rebuildKeys`, yaitu proses membangun ulang separator key pada internal node. Proses ini membuat `B+ Tree` melakukan pekerjaan tambahan yang tidak dilakukan oleh `B-Tree`. Karena itu, hasil benchmark lebih merepresentasikan performa implementasi program, bukan semata-mata perbandingan teoretis antara `B-Tree` dan `B+ Tree`.
+
+Secara teori,` B+ Tree` tetap memiliki keunggulan untuk range query dan sequential access karena seluruh data berada di leaf node yang saling terhubung. Namun, keunggulan ini akan lebih terlihat pada sistem database berbasis block storage atau jika implementasi `B+ Tree` dibuat lebih optimal, misalnya menggunakan array primitif, fan-out internal yang lebih besar, dan pembaruan separator key secara incremental.
