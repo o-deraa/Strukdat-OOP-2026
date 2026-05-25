@@ -35,7 +35,7 @@
   - [Keunggulan dan Kekurangan](#keunggulan-dan-kekurangan)
     - [Keunggulan B-Tree](#keunggulan-b-tree)
     - [Kekurangan B-Tree](#kekurangan-b-tree)
-    - [Kekunggulan B+ Tree](#kekunggulan-b-tree)
+    - [Keunggulan B+ Tree](#keunggulan-b-tree-1)
     - [Kekurangan B+ Tree](#kekurangan-b-tree-1)
     - [Keunggulan B-Tree dan B+ Tree Berdasarkan Optimasi Kompresi](#keunggulan-b-tree-dan-b-tree-berdasarkan-optimasi-kompresi)
     - [Batasan B-Tree dan B+ Tree Berdasarkan Optimasi Kompresi](#batasan-b-tree-dan-b-tree-berdasarkan-optimasi-kompresi)
@@ -51,7 +51,6 @@
       - [Perbedaan Efisiensi Teoretis](#perbedaan-efisiensi-teoretis)
       - [Ringkasan Perbedaan](#ringkasan-perbedaan)
   - [Analisis Kompleksitas Berdasarkan Struktur Tree](#analisis-kompleksitas-berdasarkan-struktur-tree)
-  - [Analisis Kompleksitas Berdasarkan Struktur Tree](#analisis-kompleksitas-berdasarkan-struktur-tree-1)
   - [Potensi Pengembangan ke Depan](#potensi-pengembangan-ke-depan)
     - [Sistem Kompresi Adaptif](#sistem-kompresi-adaptif)
     - [Pengembangan PkB-tree untuk Penyimpanan Modern](#pengembangan-pkb-tree-untuk-penyimpanan-modern)
@@ -67,7 +66,7 @@
 ## Anggota Kelompok
 
 
-| No | Nama | NIM |
+| No | Nama | NRP |
 |----|------|-----|
 | 1  | Ferlin Erdina Sari | 5027251002 |
 | 2  | Az Zahra Fiddien Al Farabi | 5027251021 |
@@ -462,7 +461,7 @@ Dengan demikian, kompresi index memiliki trade-off. Di satu sisi, kompresi dapat
 
 Selain itu, implementasi delete pada `B-Tree` relatif kompleks. Sistem perlu menangani berbagai kasus seperti peminjaman key dari sibling, penggabungan node, dan pembaruan struktur parent.
 
-### Kekunggulan B+ Tree
+### Keunggulan B+ Tree
 
 `B+ Tree` sangat unggul untuk range query dan sequential access. Karena seluruh data berada pada leaf node dan leaf saling terhubung, sistem dapat membaca data secara berurutan dengan mudah setelah posisi awal ditemukan.
 
@@ -470,7 +469,7 @@ Selain itu, implementasi delete pada `B-Tree` relatif kompleks. Sistem perlu men
 
 ### Kekurangan B+ Tree
 
-Kekurangan `B+ Tree` adalah pencarian satu nilai harus selalu mencapai leaf node. Berbeda dengan B-Tree, pencarian tidak dapat berhenti di internal node karena internal node hanya menyimpan index.
+Kekurangan `B+ Tree` adalah pencarian satu nilai harus selalu mencapai leaf node. Berbeda dengan `B-Tree`, pencarian tidak dapat berhenti di internal node karena internal node hanya menyimpan index.
 
 Selain itu, `B+ Tree` membutuhkan pointer tambahan antar-leaf. Pointer ini memberikan keuntungan besar untuk sequential access, tetapi juga menambah kompleksitas implementasi, terutama saat insertion dan deletion menyebabkan split atau merge pada leaf.
 
@@ -484,11 +483,11 @@ Pada `B+ Tree`, keunggulan range query tetap menjadi salah satu aspek paling pen
 
 ### Batasan B-Tree dan B+ Tree Berdasarkan Optimasi Kompresi
 
-Meskipun kompresi dapat meningkatkan performa dan menghemat ruang, tidak semua teknik kompresi selalu memberikan hasil yang lebih baik. Teknik berbasis delta encoding seperti WiredTiger dan MyISAM dapat menimbulkan overhead dekompresi. Pada WiredTiger, sebagian besar waktu insert dapat habis untuk proses dekompresi, sehingga performanya dapat lebih rendah dibandingkan B-Tree tanpa kompresi.
+Meskipun kompresi dapat meningkatkan performa dan menghemat ruang, tidak semua teknik kompresi selalu memberikan hasil yang lebih baik. Teknik berbasis delta encoding seperti WiredTiger dan MyISAM dapat menimbulkan overhead dekompresi. Pada WiredTiger, sebagian besar waktu insert dapat habis untuk proses dekompresi, sehingga performanya dapat lebih rendah dibandingkan `B-Tree` tanpa kompresi.
 
 Selain itu, efektivitas kompresi sangat bergantung pada karakteristik data. Dataset seperti URL atau teks yang memiliki banyak kesamaan prefix biasanya lebih mudah dikompresi, sedangkan data numerik dengan variasi prefix rendah dapat menghasilkan penghematan ruang yang lebih kecil. Ukuran halaman yang terlalu besar juga tidak selalu meningkatkan performa karena ketika tinggi tree sudah tidak dapat dikurangi lagi, biaya pencarian di dalam node justru dapat meningkat.
 
-Beberapa varian seperti PkB-tree juga memiliki keterbatasan tertentu. PkB-tree lebih sesuai untuk mengurangi CPU cache miss pada sistem berbasis memori, tetapi kurang optimal untuk sistem berbasis disk karena dapat mengurangi locality dan menyebabkan range query membutuhkan lebih banyak operasi I/O.
+Beberapa varian seperti `PkB-tree` juga memiliki keterbatasan tertentu. `PkB-tree` lebih sesuai untuk mengurangi CPU cache miss pada sistem berbasis memori, tetapi kurang optimal untuk sistem berbasis disk karena dapat mengurangi locality dan menyebabkan range query membutuhkan lebih banyak operasi I/O.
 
 ## Perbandingan B Tree dan B+ Tree Secara Teori
 
@@ -621,8 +620,6 @@ Untuk range query dan traversal berurutan, `B+ Tree` lebih unggul karena linked 
 | Orientasi desain | Struktur pencarian seimbang secara umum | Indexing database dan block-based storage |
 | Kelebihan utama | Struktur lebih langsung untuk pencarian key | Sangat kuat untuk indexing, range query, dan traversal data |
 | Konsekuensi utama | Data tersebar di beberapa level | Data terkonsentrasi di leaf, internal node lebih ringan sebagai indeks |
-
-## Analisis Kompleksitas Berdasarkan Struktur Tree
 
 ## Analisis Kompleksitas Berdasarkan Struktur Tree
 
